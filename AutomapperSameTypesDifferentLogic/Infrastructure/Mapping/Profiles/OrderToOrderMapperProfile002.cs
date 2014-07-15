@@ -22,6 +22,10 @@ namespace AutomapperSameTypesDifferentLogic.Infrastructure.Mapping.Profiles
                 .WithProfile("Profile002")
                 .ForMember(dest => dest.Code, opt => opt.MapFrom(source => System.Guid.Empty))
                 .ForMember(dest => dest.OrderLines, opt => opt.Ignore())
+                .BeforeMap((source, destination) =>
+                {
+                    string message = "";
+                })
                 .AfterMap((source, destination) =>
                 {
                     Console.WriteLine("OrderToOrderMapperProfile002 => Map For [Domain.Order] => [Profile002]");

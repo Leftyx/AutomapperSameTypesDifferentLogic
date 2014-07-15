@@ -17,11 +17,11 @@ namespace AutomapperSameTypesDifferentLogic
         {
             var container = IoC.Initialize();
 
-            TestStandardEngine(container);
+            // TestStandardEngine(container);
             TestCustomEngine(container);
 
-            TestStandardEngine(container);
-            TestCustomEngine(container);
+            //TestStandardEngine(container);
+            //TestCustomEngine(container);
 
             Console.WriteLine("Finished!");
             Console.ReadLine();
@@ -54,7 +54,9 @@ namespace AutomapperSameTypesDifferentLogic
 
             var mapper = container.GetInstance<IMappingEngine>("CustomMappingEngine");
 
-            order = mapper.Map<Domain.Order, Domain.Order>(order);
+            Domain.Order orderMerge = CreateOrderAndLinesTemp();
+
+            order = mapper.Map<Domain.Order, Domain.Order>(order, orderMerge);
 
             Console.WriteLine(order.Code);
             foreach (var line in order.OrderLines)
@@ -81,6 +83,22 @@ namespace AutomapperSameTypesDifferentLogic
             orderLine2.ItemCode = "IT80N";
             orderLine2.Quantity = 210;
             order.AddOrderLine(orderLine2);
+
+            return (order);
+
+        }
+
+        private static Domain.Order CreateOrderAndLinesTemp()
+        {
+            Domain.Order order = new Domain.Order();
+            order.Code = Guid.NewGuid();
+            order.OrderNumber = "XXX";
+
+            Domain.OrderLine orderLine1 = new Domain.OrderLine();
+            orderLine1.Code = Guid.NewGuid();
+            orderLine1.ItemCode = "XXX";
+            orderLine1.Quantity = 0;
+            order.AddOrderLine(orderLine1);
 
             return (order);
 
